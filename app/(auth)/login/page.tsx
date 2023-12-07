@@ -43,11 +43,9 @@ const LoginPage = () => {
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
-                            <img src="/demo/images/login/avatar.png" alt="Image" height="50" className="mb-3" />
-                            <div className="text-900 text-3xl font-medium mb-3">Welcome, Isabel!</div>
-                            <span className="text-600 font-medium">Sign in to continue</span>
+                            <div className="text-900 text-3xl font-medium mb-3">Welcome back !</div>
+                            <span className="text-600 font-medium">Login to Your Account</span>
                         </div>
-
                         <div>
                             <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
                                 Email
@@ -84,6 +82,37 @@ const LoginPage = () => {
                                     dispatch(loginAsync({ email: state.email, password: state.password }));
                                 }}
                             ></Button>
+                            <div className="text-center mt-5">
+                                <span>Don't have an account ? </span>
+                                <a
+                                    className="font-medium no-underline cursor-pointer"
+                                    style={{ color: 'var(--primary-color)' }}
+                                    onClick={() => {
+                                        router.push('/register');
+                                    }}
+                                >
+                                    Signup
+                                </a>
+                            </div>
+                            <div className="text-center mt-5">
+                                <div className="flex justify-content-center gap-3 mt-3">
+                                    <Button
+                                        className="p-button-danger"
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        <i className="pi pi-google pr-2"> </i> Google
+                                    </Button>
+
+                                    <Button
+                                        className="p-button-primary"
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        <i className="pi pi-facebook pr-2"></i> Facebook
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

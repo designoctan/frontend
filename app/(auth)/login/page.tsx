@@ -5,16 +5,29 @@ import React, { useContext, useState } from 'react';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
-import { LayoutContext } from '../../../../layout/context/layoutcontext';
+import { LayoutContext } from '../../../layout/context/layoutcontext';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAsync } from '../../redux/auth/authSlice';
 
-const SignupPage = () => {
-    const [password, setPassword] = useState('');
-    const [checked, setChecked] = useState(false);
+const initialState = {
+    email: 'parag@gmail.com',
+    password: 'admin@123'
+};
+
+const LoginPage = () => {
+    const [state, setState] = useState(initialState);
     const { layoutConfig } = useContext(LayoutContext);
-
+    const dispatch = useDispatch();
     const router = useRouter();
+
+    const reduxState = useSelector((state: any) => state.auth);
+
+    if (reduxState.data && reduxState.success) {
+        router.replace('/dashboard');
+    }
+
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
     return (
@@ -29,47 +42,48 @@ const SignupPage = () => {
                     }}
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
-                        {/* <div className="text-center mb-5">
+                        <div className="text-center mb-5">
                             <img src="/demo/images/login/avatar.png" alt="Image" height="50" className="mb-3" />
                             <div className="text-900 text-3xl font-medium mb-3">Welcome, Isabel!</div>
                             <span className="text-600 font-medium">Sign in to continue</span>
-                        </div> */}
+                        </div>
 
                         <div>
-                            <label htmlFor="name" className="block text-900 text-xl font-medium mb-2">
-                                Name
-                            </label>
-                            <InputText id="name" type="text" placeholder="Name" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
-
                             <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
                                 Email
                             </label>
-                            <InputText id="email1" type="text" placeholder="Email address" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
-
-                            <label htmlFor="contact_no" className="block text-900 text-xl font-medium mb-2">
-                                Contact No
-                            </label>
-                            <InputText id="contact_no" type="text" placeholder="Enter Contact No" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                            <InputText id="email1" type="text" placeholder="Email address" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
                             <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
                                 Password
                             </label>
-                            <Password inputId="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <Password
+                                inputId="password1"
+                                value={state.password}
+                                onChange={(e) => setState({ ...state, password: e.target.value })}
+                                placeholder="Password"
+                                toggleMask
+                                className="w-full mb-5"
+                                inputClassName="w-full p-3 md:w-30rem"
+                            ></Password>
 
-                            <label htmlFor="company_name" className="block text-900 text-xl font-medium mb-2">
-                                Company Name
-                            </label>
-                            <InputText id="company_name" type="text" placeholder="Company Name" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
                                 <div className="flex align-items-center">
-                                    <Checkbox inputId="rememberme1" checked={checked} onChange={(e) => setChecked(e.checked ?? false)} className="mr-2"></Checkbox>
+                                    <Checkbox inputId="rememberme1" checked={false} onChange={(e) => {}} className="mr-2"></Checkbox>
                                     <label htmlFor="rememberme1">Remember me</label>
                                 </div>
                                 <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
                                     Forgot password?
                                 </a>
                             </div>
-                            <Button label="Start Shipping" className="w-full p-3 text-xl" onClick={() => router.push('/')}></Button>
+                            <Button
+                                label={reduxState.loading ? 'Loading...' : 'Sign In'}
+                                className="w-full p-3 text-xl"
+                                disabled={reduxState.loading}
+                                onClick={() => {
+                                    dispatch(loginAsync({ email: state.email, password: state.password }));
+                                }}
+                            ></Button>
                         </div>
                     </div>
                 </div>
@@ -78,4 +92,4 @@ const SignupPage = () => {
     );
 };
 
-export default SignupPage;
+export default LoginPage;

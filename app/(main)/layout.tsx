@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Layout from '../../layout/layout';
-
+import PrivateRoute from './PrivateRoute';
 interface AppLayoutProps {
     children: React.ReactNode;
 }
@@ -24,5 +24,9 @@ export const metadata: Metadata = {
 };
 
 export default function AppLayout({ children }: AppLayoutProps) {
-    return <Layout>{children}</Layout>;
+    return (
+        <Layout>
+            <PrivateRoute>{children}</PrivateRoute>
+        </Layout>
+    );
 }

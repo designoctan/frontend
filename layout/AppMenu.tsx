@@ -12,8 +12,54 @@ const AppMenu = () => {
 
     const model: AppMenuItem[] = [
         {
-            label: 'Home',
-            items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+            label: 'Menu',
+            items: [
+                { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
+                { label: 'Dashboard', icon: 'pi pi-fw pi-chart-bar', to: '/dashboard' },
+                { label: 'Orders', icon: 'pi pi-fw pi-shopping-cart', to: '/orders' },
+                { label: 'Returns', icon: 'pi pi-fw pi-undo', to: '/returns' },
+                { label: 'Delivery Boost', icon: 'pi pi-fw pi-shopping-bag', to: '/delivery-boost' },
+                {
+                    label: 'Weight Management',
+                    icon: 'pi pi-fw pi-box',
+                    items: [
+                        { label: 'Weight Discrepancy', to: '/weight-discrepancy' },
+                        { label: 'Weight Freeze', to: '/weight-freeze' }
+                    ]
+                },
+                {
+                    label: 'Setup & Manage',
+                    icon: 'pi pi-fw pi-qrcode',
+                    items: [
+                        { label: 'Channels', to: '#' },
+                        { label: 'Catalogue', to: '#' },
+                        { label: 'Courier', to: '#' },
+                        { label: 'Packaging', to: '#' },
+                        { label: 'Customers', to: '#' }
+                    ]
+                },
+                {
+                    label: 'Buyer Experience',
+                    icon: 'pi pi-fw pi-users',
+                    items: [
+                        { label: 'Brand Boost', to: '#' },
+                        { label: 'Buyer Communication', to: '#' },
+                        { label: 'Return & Refunds', to: '#' }
+                    ]
+                },
+                { label: 'Billing', icon: 'pi pi-fw pi-book', to: '#' },
+                {
+                    label: 'Tools',
+                    icon: 'pi pi-fw pi-wrench',
+                    items: [
+                        { label: 'Brand Boost', to: '#' },
+                        { label: 'Buyer Communication', to: '#' },
+                        { label: 'Return & Refunds', to: '#' }
+                    ]
+                },
+                { label: 'Settings', icon: 'pi pi-fw pi-cog', to: '#' },
+                { label: 'Help & Support', icon: 'pi pi-fw pi-heart', to: '#' }
+            ]
         },
         {
             label: 'UI Components',

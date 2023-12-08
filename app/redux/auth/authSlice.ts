@@ -1,15 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TResponse, loginService } from '../../api/authService';
+import { loginService, registerService } from '../../api/authService';
 
 const initialState = {
     success: false,
     loading: false,
-    data: null
+    data: null,
+    error: ''
 };
 
 export const loginAsync = createAsyncThunk('login/fetch', async (args: { email: string; password: string }) => {
-    const response: TResponse = await loginService(args.email, args.password);
-    return await response.data;
+    try {
+        const response = await loginService(args.email, args.password);
+        return await response.data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message || error?.message || 'Something went wrong!');
+    }
+});
+
+export const registerAsync = createAsyncThunk('register/fetch', async (args: { email: string; password: string; mobileNumber: string; name: string }) => {
+    try {
+        const response = await registerService(args.email, args.password, args.mobileNumber, args.name);
+        return await response.data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message || error?.message || 'Something went wrong!');
+    }
 });
 
 export const authSlice = createSlice({
@@ -17,10 +31,11 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setAuthUser: (state, action) => {
-            state.data = action.payload
-          },
+            state.data = action.payload;
+        }
     },
     extraReducers: (builder) => {
+        // Login request
         builder
             .addCase(loginAsync.pending, (state) => {
                 state.loading = true;
@@ -34,11 +49,26 @@ export const authSlice = createSlice({
             .addCase(loginAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
+                state.error = action.error.message as unknown as string;
+            });
+        // Register request
+        builder
+            .addCase(registerAsync.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(registerAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload.data;
+                state.success = true;
+            })
+            .addCase(registerAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.error.message as unknown as string;
             });
     }
 });
 
-export const { setAuthUser} = authSlice.actions;
-
+export const { setAuthUser } = authSlice.actions;
 
 export default authSlice.reducer;

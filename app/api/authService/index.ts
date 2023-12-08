@@ -1,16 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
 
-const login_url = 'https://enjoytheshow.in/v1/user/auth/login';
-
-export interface TResponse {
-    success: boolean;
-    data: any;
-    message: string;
-}
+const base_url = 'https://enjoytheshow.in/v1';
+const login_url = '/user/auth/login';
+const register_url = '/user/auth/register';
 
 export const loginService = async (email: string, password: string): Promise<any> => {
-    return await axios.post(login_url, {
+    return await axios.post(base_url + login_url, {
         email,
         password
+    });
+};
+
+export const registerService = async (email: string, password: string, mobileNumber: string, name: string): Promise<any> => {
+    return await axios.post(base_url + register_url, {
+        email,
+        password,
+        name,
+        mobileNumber
     });
 };

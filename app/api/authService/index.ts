@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-const base_url = 'https://enjoytheshow.in/v1';
+export const base_url = 'https://enjoytheshow.in/v1';
 const login_url = '/user/auth/login';
 const register_url = '/user/auth/register';
 

@@ -11,6 +11,7 @@ import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../redux/auth/authSlice';
+import { TAuthState } from '../../redux/auth';
 
 const initialState = {
     email: 'parag@gmail.com',
@@ -24,9 +25,9 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const reduxState = useSelector((state: any) => state.auth);
+    const reduxState = useSelector((state: {auth:TAuthState}) => state.auth);
 
-    if (reduxState.data && reduxState.success) {
+    if (reduxState.currentUser && reduxState.success) {
         router.replace('/dashboard');
     }
     

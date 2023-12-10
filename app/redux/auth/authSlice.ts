@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice,PayloadAction } from '@reduxjs/toolkit';
 import { loginService, registerService } from '../../api/authService';
+import { TAuthState } from '.';
 
-const initialState = {
+const initialState:TAuthState = {
     success: false,
     loading: false,
-    data: null,
+    currentUser: null,
     error: ''
 };
 
@@ -31,37 +32,37 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
       setAuthUser: (state, action: PayloadAction<any>) => {
-        state.data = action.payload;
+        state.currentUser = action.payload;
       },
     },
     extraReducers: (builder) => {
       // Login request
       builder
-        .addCase(loginAsync.pending, (state) => {
+        .addCase(loginAsync.pending, (state:TAuthState) => {
           state.loading = true;
         })
-        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<any>) => {
-          localStorage.setItem('user', JSON.stringify(action.payload?.data?.user));
+        .addCase(loginAsync.fulfilled, (state:TAuthState, action: PayloadAction<any>) => {
+          localStorage.setItem('user', JSON.stringify(action.payload?.data));
           state.loading = false;
-          state.data = action.payload.data;
+          state.currentUser = action.payload.data;
           state.success = true;
         })
-        .addCase(loginAsync.rejected, (state, action: PayloadAction<any>) => {
+        .addCase(loginAsync.rejected, (state:TAuthState, action: PayloadAction<any>) => {
           state.loading = false;
           state.success = false;
           state.error = action.payload.message as string;
         });
       // Register request
       builder
-        .addCase(registerAsync.pending, (state) => {
+        .addCase(registerAsync.pending, (state:TAuthState) => {
           state.loading = true;
         })
-        .addCase(registerAsync.fulfilled, (state, action: PayloadAction<any>) => {
+        .addCase(registerAsync.fulfilled, (state:TAuthState, action: PayloadAction<any>) => {
           state.loading = false;
-          state.data = action.payload.data;
+          state.currentUser = action.payload.data;
           state.success = true;
         })
-        .addCase(registerAsync.rejected, (state, action: PayloadAction<any>) => {
+        .addCase(registerAsync.rejected, (state:TAuthState, action: PayloadAction<any>) => {
           state.loading = false;
           state.success = false;
           state.error = action.payload.message as string;

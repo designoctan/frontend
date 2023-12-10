@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const WeightFreeze = () => {
+const WeightFreeze = () => {
     return <div>WeightFreeze</div>;
 };
 

@@ -101,7 +101,7 @@ const SignupPage = () => {
                                     label="Start Shipping"
                                     className="w-full p-3 text-xl"
                                     onClick={() => {
-                                        dispatch(registerAsync({ email: state.email, password: state.password, mobileNumber: state.mobileNumber, name: state.name }));
+                                        dispatch(registerAsync({ email: state.email, password: state.password, mobileNumber: state.mobileNumber, name: state.name }) as any);
                                         // router.push('/login')
                                     }}
                                 ></Button>

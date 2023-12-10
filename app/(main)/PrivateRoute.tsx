@@ -1,13 +1,17 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect,ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { setAuthUser } from '../redux/auth/authSlice';
 
-const PrivateRoute = ({ children }) => {
+interface PrivateRouteProps {
+    children?: ReactNode;
+  }
+  
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {    
     const router = useRouter();
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth);
+    const user = useSelector((state:any) => state.auth);
 
     useEffect(() => {
         const localUser: string | null = localStorage.getItem('user');

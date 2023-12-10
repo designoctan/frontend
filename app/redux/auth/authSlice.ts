@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice,PayloadAction } from '@reduxjs/toolkit';
 import { loginService, registerService } from '../../api/authService';
 
 const initialState = {
@@ -30,44 +30,44 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setAuthUser: (state, action) => {
-            state.data = action.payload;
-        }
+      setAuthUser: (state, action: PayloadAction<any>) => {
+        state.data = action.payload;
+      },
     },
     extraReducers: (builder) => {
-        // Login request
-        builder
-            .addCase(loginAsync.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(loginAsync.fulfilled, (state, action) => {
-                localStorage.setItem('user', JSON.stringify(action.payload?.data?.user));
-                state.loading = false;
-                state.data = action.payload.data;
-                state.success = true;
-            })
-            .addCase(loginAsync.rejected, (state, action) => {
-                state.loading = false;
-                state.success = false;
-                state.error = action.error.message as unknown as string;
-            });
-        // Register request
-        builder
-            .addCase(registerAsync.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(registerAsync.fulfilled, (state, action) => {
-                state.loading = false;
-                state.data = action.payload.data;
-                state.success = true;
-            })
-            .addCase(registerAsync.rejected, (state, action) => {
-                state.loading = false;
-                state.success = false;
-                state.error = action.error.message as unknown as string;
-            });
-    }
-});
+      // Login request
+      builder
+        .addCase(loginAsync.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<any>) => {
+          localStorage.setItem('user', JSON.stringify(action.payload?.data?.user));
+          state.loading = false;
+          state.data = action.payload.data;
+          state.success = true;
+        })
+        .addCase(loginAsync.rejected, (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.success = false;
+          state.error = action.payload.message as string;
+        });
+      // Register request
+      builder
+        .addCase(registerAsync.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(registerAsync.fulfilled, (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.data = action.payload.data;
+          state.success = true;
+        })
+        .addCase(registerAsync.rejected, (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.success = false;
+          state.error = action.payload.message as string;
+        });
+    },
+  });
 
 export const { setAuthUser } = authSlice.actions;
 

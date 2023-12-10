@@ -24,7 +24,7 @@ const CommonDataTable = () => {
   
     return (
         <>
-            <DataTable value={[]} paginator className="p-datatable-gridlines" showGridlines rows={10} dataKey="id" filters={[]} filterDisplay="menu" loading={false} responsiveLayout="scroll" emptyMessage="No customers found." header={[]}>
+<DataTable value={[]} paginator className="p-datatable-gridlines" showGridlines rows={10} dataKey="id" filters={undefined} filterDisplay="menu" loading={false} responsiveLayout="scroll" emptyMessage="No customers found." header={[]}>
                 <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                 <Column header="Country" filterField="country.name" style={{ minWidth: '12rem' }} body={<></>} filter filterPlaceholder="Search by country" filterClear={''} filterApply={''} />
                 <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body={<></>} filter filterElement={<></>} />

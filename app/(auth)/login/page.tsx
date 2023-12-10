@@ -35,7 +35,7 @@ const LoginPage = () => {
     }
 
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
-
+      
     return (
         <>
             <div className={containerClassName}>
@@ -86,11 +86,11 @@ const LoginPage = () => {
                                     className="w-full p-3 text-xl"
                                     disabled={reduxState.loading}
                                     onClick={() => {
-                                        dispatch(loginAsync({ email: state.email, password: state.password }));
+                                        dispatch(loginAsync({ email: state.email, password: state.password }) as any);
                                     }}
                                 ></Button>
                                 <div className="text-center mt-5">
-                                    <span>Don't have an account ? </span>
+                                    <span>Dont have an account ? </span>
                                     <a
                                         className="font-medium no-underline cursor-pointer"
                                         style={{ color: 'var(--primary-color)' }}

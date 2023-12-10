@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice,PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loginService, registerService } from '../../api/authService';
 import { TAuthState } from '.';
 
-const initialState:TAuthState = {
+const initialState: TAuthState = {
     success: false,
     loading: false,
     currentUser: null,
@@ -31,44 +31,44 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-      setAuthUser: (state, action: PayloadAction<any>) => {
-        state.currentUser = action.payload;
-      },
+        setAuthUser: (state, action: PayloadAction<any>) => {
+            state.currentUser = action.payload;
+        }
     },
     extraReducers: (builder) => {
-      // Login request
-      builder
-        .addCase(loginAsync.pending, (state:TAuthState) => {
-          state.loading = true;
-        })
-        .addCase(loginAsync.fulfilled, (state:TAuthState, action: PayloadAction<any>) => {
-          localStorage.setItem('user', JSON.stringify(action.payload?.data));
-          state.loading = false;
-          state.currentUser = action.payload.data;
-          state.success = true;
-        })
-        .addCase(loginAsync.rejected, (state:TAuthState, action: PayloadAction<any>) => {
-          state.loading = false;
-          state.success = false;
-          state.error = action.payload.message as string;
-        });
-      // Register request
-      builder
-        .addCase(registerAsync.pending, (state:TAuthState) => {
-          state.loading = true;
-        })
-        .addCase(registerAsync.fulfilled, (state:TAuthState, action: PayloadAction<any>) => {
-          state.loading = false;
-          state.currentUser = action.payload.data;
-          state.success = true;
-        })
-        .addCase(registerAsync.rejected, (state:TAuthState, action: PayloadAction<any>) => {
-          state.loading = false;
-          state.success = false;
-          state.error = action.payload.message as string;
-        });
-    },
-  });
+        // Login request
+        builder
+            .addCase(loginAsync.pending, (state: TAuthState) => {
+                state.loading = true;
+            })
+            .addCase(loginAsync.fulfilled, (state: TAuthState, action: PayloadAction<any>) => {
+                localStorage.setItem('user', JSON.stringify(action.payload?.data));
+                state.loading = false;
+                state.currentUser = action.payload.data;
+                state.success = true;
+            })
+            .addCase(loginAsync.rejected, (state: TAuthState, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.error.message as string;
+            });
+        // Register request
+        builder
+            .addCase(registerAsync.pending, (state: TAuthState) => {
+                state.loading = true;
+            })
+            .addCase(registerAsync.fulfilled, (state: TAuthState, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.currentUser = action.payload.data;
+                state.success = true;
+            })
+            .addCase(registerAsync.rejected, (state: TAuthState, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.error.message as string;
+            });
+    }
+});
 
 export const { setAuthUser } = authSlice.actions;
 

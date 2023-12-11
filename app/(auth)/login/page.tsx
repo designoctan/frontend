@@ -41,7 +41,6 @@ const LoginPage = () => {
         <>
             <div className={containerClassName}>
                 <div className="flex flex-column align-items-center justify-content-center">
-                    {/* <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" /> */}
                     <div
                         style={{
                             borderRadius: '56px',
@@ -49,31 +48,24 @@ const LoginPage = () => {
                             background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)'
                         }}
                     >
-                        <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
+                        <div className="w-full surface-card py-3 px-3 sm:px-4 sm:py-6" style={{ borderRadius: '53px' }}>
                             <div className="text-center mb-5">
-                                <div className="text-900 text-3xl font-medium mb-3">Welcome back !</div>
+                                <div className="text-900 text-3xl font-bold mb-3">Welcome back !</div>
                                 <span className="text-600 font-medium">Login to Your Account</span>
                             </div>
                             <div>
-                                <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
-                                    Email
-                                </label>
-                                <InputText id="email1" type="text" placeholder="Email address" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
-
-                                <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
-                                    Password
-                                </label>
+                                <InputText id="email1" type="text" placeholder="Email address" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} className="w-full md:w-30rem mb-5 block" style={{ padding: '1rem' }} />
                                 <Password
                                     inputId="password1"
                                     value={state.password}
                                     onChange={(e) => setState({ ...state, password: e.target.value })}
                                     placeholder="Password"
                                     toggleMask
-                                    className="w-full mb-5"
+                                    className="w-full mb-4 block"
                                     inputClassName="w-full p-3 md:w-30rem"
                                 ></Password>
 
-                                <div className="flex align-items-center justify-content-between mb-5 gap-5">
+                                <div className="flex align-items-center justify-content-between mb-4 gap-5">
                                     <div className="flex align-items-center">
                                         <Checkbox inputId="rememberme1" checked={state.isRemember} onChange={(e) => setState({ ...state, isRemember: !state.isRemember })} className="mr-2"></Checkbox>
                                         <label htmlFor="rememberme1">Remember me</label>

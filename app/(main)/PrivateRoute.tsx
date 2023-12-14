@@ -16,17 +16,23 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 
     useEffect(() => {
         const localUser = localStorage.getItem('user');
+        const isLoginOrRegisterPage = ['/register', '/login'].includes(window.location.pathname);
 
         if (!localUser) {
-            router.replace('/login');
-            return;
+            if (isLoginOrRegisterPage) {
+                router.replace(window.location.pathname);
+                return;
+            } else {
+                router.replace('/login');
+                return;
+            }
         }
 
         const storedUser = JSON.parse(localUser);
 
         if (!reduxState.currentUser && storedUser) {
             dispatch(setAuthUser(storedUser));
-        } else if (reduxState.currentUser && ['/register', '/login'].includes(window.location.pathname)) {
+        } else if (reduxState.currentUser && isLoginOrRegisterPage) {
             router.replace('/dashboard');
         }
     }, [reduxState.currentUser, dispatch, router]);

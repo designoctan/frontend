@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { loginService, registerService } from '../../api/authService';
+import { socialMediaAuthService, loginService, registerService, TSocialAuthEnum } from '../../api/authService';
 import { TAuthState } from '.';
 
 const initialState: TAuthState = {
@@ -24,6 +24,15 @@ export const registerAsync = createAsyncThunk('register/fetch', async (args: { e
         return await response.data;
     } catch (error: any) {
         throw new Error(error?.response?.data?.message || error?.message || 'Something went wrong!');
+    }
+});
+
+export const socialMediaAuthAsync = createAsyncThunk('google/fetch', async (args: { access_token: string; socialMediaType: TSocialAuthEnum }) => {
+    try {
+        const response = await socialMediaAuthService(args.access_token, args.socialMediaType);
+        return await response.data;
+    } catch (error: any) {
+        throw new Error(`${args.socialMediaType}: ${error?.response?.data?.message}` || error?.message || 'Something went wrong!');
     }
 });
 
@@ -63,6 +72,21 @@ export const authSlice = createSlice({
                 state.success = true;
             })
             .addCase(registerAsync.rejected, (state: TAuthState, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.error.message as string;
+            });
+        // social media login
+        builder
+            .addCase(socialMediaAuthAsync.pending, (state: TAuthState, action: any) => {
+                state.loading = true;
+            })
+            .addCase(socialMediaAuthAsync.fulfilled, (state: TAuthState, action: any) => {
+                state.loading = false;
+                state.currentUser = action.payload?.data || null;
+                state.success = true;
+            })
+            .addCase(socialMediaAuthAsync.rejected, (state: TAuthState, action: any) => {
                 state.loading = false;
                 state.success = false;
                 state.error = action.error.message as string;

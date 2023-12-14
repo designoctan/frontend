@@ -6,8 +6,6 @@ import { DataTable, DataTableExpandedRows, DataTableFilterMeta } from 'primereac
 import { useDispatch, useSelector } from 'react-redux';
 import { TAuthState } from '../../../redux/auth';
 import { ordersAsync } from '../../../redux/orders/ordersSlice';
-import { AsyncThunkAction, UnknownAction } from '@reduxjs/toolkit';
-import { AsyncThunkConfig } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { TOrdersState } from '../../../redux/orders';
 
 const Orders = () => {
@@ -22,6 +20,13 @@ console.log(reduxState.orders.orders);
         if (reduxState.auth.currentUser?.tokens.access.token && reduxState.orders.orders === null) {
             dispatch(ordersAsync({ token: reduxState.auth.currentUser?.tokens.access.token }) as any);
         }
+    // const reduxState = useSelector((state: { auth: TAuthState}) => state);
+
+    // const getOrders = () => {};
+
+    // useEffect(() => {
+        // if(reduxState.auth.)
+        // console.log(reduxState.auth.currentUser);
     }, []);
     return (
         <div>

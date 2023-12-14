@@ -15,20 +15,23 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     const reduxState = useSelector((state: { auth: TAuthState }) => state.auth);
 
     useEffect(() => {
-        const localUser: string | null = localStorage.getItem('user');
-        if (localUser) {
-            const storedUser = JSON.parse(localUser);
-            if (!reduxState.currentUser && !storedUser) {
-                router.push('/login');
-            } else if (!reduxState.currentUser && storedUser) {
-                dispatch(setAuthUser(storedUser));
-            }
-        } else {
-            router.push('/login');
+        const localUser = localStorage.getItem('user');
+
+        if (!localUser) {
+            router.replace('/login');
+            return;
+        }
+
+        const storedUser = JSON.parse(localUser);
+
+        if (!reduxState.currentUser && storedUser) {
+            dispatch(setAuthUser(storedUser));
+        } else if (reduxState.currentUser && ['/register', '/login'].includes(window.location.pathname)) {
+            router.replace('/dashboard');
         }
     }, [reduxState.currentUser, dispatch, router]);
 
-    return reduxState.currentUser ? <>{children}</> : null;
+    return reduxState.currentUser ? <>{children}</> : <>{children}</>;
 };
 
 export default PrivateRoute;

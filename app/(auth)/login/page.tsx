@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
@@ -10,12 +11,15 @@ import { LayoutContext } from '../../../layout/context/layoutcontext';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAsync } from '../../redux/auth/authSlice';
+import { socialMediaAuthAsync, loginAsync } from '../../redux/auth/authSlice';
 import { TAuthState } from '../../redux/auth';
+import PrivateRoute from '../../(main)/PrivateRoute';
 
 const initialState = {
-    email: 'parag@gmail.com',
-    password: 'admin@123',
+    email: 'test123@yopmail.com',
+    password: '12345678',
+    // email: 'parag@gmail.com',
+    // password: 'admin@123',
     isRemember: false
 };
 
@@ -25,20 +29,18 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const reduxState = useSelector((state: {auth:TAuthState}) => state.auth);
+    const reduxState = useSelector((state: { auth: TAuthState }) => state.auth);
 
-    if (reduxState.currentUser && reduxState.success) {
-        router.replace('/dashboard');
-    }
-    
-    if (reduxState.error!=='') {
-        toast(reduxState.error);
-    }
+    useEffect(() => {
+        if (reduxState.error !== '') {
+            toast(reduxState.error);
+        }
+    }, [reduxState.error]);
 
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
-      
+
     return (
-        <>
+        <PrivateRoute>
             <div className={containerClassName}>
                 <div className="flex flex-column align-items-center justify-content-center">
                     <div
@@ -96,12 +98,24 @@ const LoginPage = () => {
                                 </div>
                                 <div className="text-center mt-5">
                                     <div className="flex justify-content-center gap-3 mt-3">
-                                        <Button className="p-button-danger" onClick={() => {}}>
-                                            <i className="pi pi-google pr-2"> </i> Google
+                                        <Button
+                                            className="p-button-danger"
+                                            disabled={reduxState.loading}
+                                            onClick={() => {
+                                                dispatch(socialMediaAuthAsync({ access_token: '', socialMediaType: 'google' }) as any);
+                                            }}
+                                        >
+                                            <i className="pi pi-google pr-2"> </i> {reduxState.loading ? 'Google...' : 'Google'}
                                         </Button>
 
-                                        <Button className="p-button-primary" onClick={() => {}}>
-                                            <i className="pi pi-facebook pr-2"></i> Facebook
+                                        <Button
+                                            className="p-button-primary"
+                                            disabled={reduxState.loading}
+                                            onClick={() => {
+                                                dispatch(socialMediaAuthAsync({ access_token: '', socialMediaType: 'facebook' }) as any);
+                                            }}
+                                        >
+                                            <i className="pi pi-facebook pr-2"></i> {reduxState.loading ? 'Facebook..' : 'Facebook'}
                                         </Button>
                                     </div>
                                 </div>
@@ -111,7 +125,7 @@ const LoginPage = () => {
                 </div>
             </div>
             <ToastContainer />
-        </>
+        </PrivateRoute>
     );
 };
 

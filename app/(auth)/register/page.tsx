@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { LayoutContext } from '../../../layout/context/layoutcontext';
@@ -13,6 +12,7 @@ import { classNames } from 'primereact/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerAsync } from '../../redux/auth/authSlice';
 import Link from 'next/link';
+import PrivateRoute from '../../(main)/PrivateRoute';
 
 const initialState = {
     email: '',
@@ -36,7 +36,7 @@ const SignupPage = () => {
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
     return (
-        <>
+        <PrivateRoute>
             <div className={containerClassName}>
                 <div className="flex flex-column align-items-center justify-content-center my-5">
                     <div
@@ -114,7 +114,7 @@ const SignupPage = () => {
                 </div>
             </div>
             <ToastContainer />
-        </>
+        </PrivateRoute>
     );
 };
 
